@@ -10,6 +10,7 @@
     <a ng-if="!isdownloading()" ng-href="download/{{ node.$path }}">{{ node.Name }}</a>
     <span ng-if="isfile() && isdownloading()">{{ node.Name }}</span>
     <span ng-if="!isdownloading()" class="controls">
+      <button onClick='const el = document.createElement("textarea");el.value = Array.from(this.parentNode.parentNode.nextElementSibling.nextElementSibling.getElementsByTagName("a")).map(a => a.href).filter(s => s.indexOf("__padding_file_") == -1).join("\n");console.log(el.value);document.body.appendChild(el);el.select();document.execCommand("copy");document.body.removeChild(el);'>Copy</button>
       <i ng-show="!confirm" ng-click="preremove()" class="red trash icon"></i>
       <i ng-show="!deleting && confirm" ng-click="deleting = true; remove();" class="red check icon"></i>
       <i ng-show="deleting" class="grey notched circle loading icon"></i>
