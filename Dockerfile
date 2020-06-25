@@ -34,12 +34,10 @@ RUN set -ex \
 	&& rm golang.tar.gz \
 	&& cd /usr/local/go/src \
 	&& patch -p2 -i /no-pic.patch \
-	&& ./make.bash \
-	&& mkdir -p $PACKAGE_DIR \
-	&& git clone https://$PACKAGE.git $PACKAGE_DIR \
-	&& cd $PACKAGE_DIR \
-	&& go build -ldflags "-X main.VERSION=$(git describe --abbrev=0 --tags)" -o /usr/local/bin/$NAME \
-	&& apk del .build-deps \
-	&& rm -rf /no-pic.patch $GOPATH /usr/local/go
+	&& ./make.bash
+RUN mkdir -p $PACKAGE_DIR
+ADD . $PACKAGE_DIR
+RUN cd $PACKAGE_DIR \
+	&& go build -ldflags "-X main.VERSION=$(git describe --abbrev=0 --tags)" -o /usr/local/bin/$NAME
 #run!
 ENTRYPOINT ["cloud-torrent"]
